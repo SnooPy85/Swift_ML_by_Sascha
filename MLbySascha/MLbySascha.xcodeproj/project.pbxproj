@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DF9A133125E59A130012DB4E /* MLbySascha.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A133025E59A130012DB4E /* MLbySascha.swift */; };
 		DF9A133925E59A5A0012DB4E /* LinearRegression.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A133825E59A5A0012DB4E /* LinearRegression.swift */; };
+		DF9A133C25E59D9E0012DB4E /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9A133B25E59D9E0012DB4E /* Matrix.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 		DF9A132D25E59A130012DB4E /* libMLbySascha.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMLbySascha.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF9A133025E59A130012DB4E /* MLbySascha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLbySascha.swift; sourceTree = "<group>"; };
 		DF9A133825E59A5A0012DB4E /* LinearRegression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearRegression.swift; sourceTree = "<group>"; };
+		DF9A133B25E59D9E0012DB4E /* Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 			children = (
 				DF9A133025E59A130012DB4E /* MLbySascha.swift */,
 				DF9A133825E59A5A0012DB4E /* LinearRegression.swift */,
+				DF9A133B25E59D9E0012DB4E /* Matrix.swift */,
 			);
 			path = MLbySascha;
 			sourceTree = "<group>";
@@ -124,6 +127,7 @@
 			files = (
 				DF9A133125E59A130012DB4E /* MLbySascha.swift in Sources */,
 				DF9A133925E59A5A0012DB4E /* LinearRegression.swift in Sources */,
+				DF9A133C25E59D9E0012DB4E /* Matrix.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
