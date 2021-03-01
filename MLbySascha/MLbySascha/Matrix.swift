@@ -15,11 +15,27 @@ struct Matrix {
         self.data = data
     }
     
-    func transpose() -> Matrix {
+    
+    func scalarMultiplication(scalar: Float64) -> Matrix {
+        
+        var product:[[Float64]] = []
+        
+        for row in self.data {
+            var resultRow:[Float64] = []
+            for element in row {
+                resultRow.append(element*scalar)
+            }
+            product.append(resultRow)
+        }
+        return Matrix(data: product)
+    }
+    
+    
+    private func calculatedTransposed(data: [[Float64]]) -> Matrix {
         var transposedMatrix:[[Float64]] = []
-        for col in 0...(self.data[0].count - 1) {
+        for col in 0...(data[0].count - 1) {
             var newRow:[Float64] = []
-            for row in self.data {
+            for row in data {
                 newRow.append(row[col])
             }
             transposedMatrix.append(newRow)
@@ -28,12 +44,17 @@ struct Matrix {
     }
     
     
+    func transpose() -> Matrix {
+        return calculatedTransposed(data: self.data)
+    }
+    
+    
     private func calculateDeterminat(data: [[Float64]]) -> Float64 {
         
         var determinant:Float64 = 0
         if data[0].count > 1 {
             
-            // Recursively call function itself and use Laplace rule
+            // Recursively call function and use Laplace rule
             // ... and always develop for first row:
             var truncatedMatrix:[[Float64]] = data
             truncatedMatrix.remove(at: 0)
@@ -84,20 +105,20 @@ struct Matrix {
     
     
     
-    func cofactorMatrix() -> Matrix {
+    private func calculateCofactorMatrix(data: [[Float64]]) -> Matrix {
         var cofactorMatrix:[[Float64]] = []
         
         // Loop over all coefficient, get right sign,
         // and determinant of sub matrix.
         
         // Note that this function is only allowed for aquare matrices.
-        let rows:Int = self.data[0].count
+        let rows:Int = data[0].count
         let cols:Int = rows
         
         for row in 0...(rows - 1) {
             var tempRow:[Float64] = []
             for col in 0...(cols - 1) {
-                let det:Float64 = calculateDeterminat(data: subMatrix(data: self.data, withoutRow: row, withoutCol: col))
+                let det:Float64 = calculateDeterminat(data: subMatrix(data: data, withoutRow: row, withoutCol: col))
                 let sign:Float64 = pow((0-1), (Float64(row) + Float64(col)))
                 tempRow.append(sign*det)
             }
@@ -108,18 +129,30 @@ struct Matrix {
     }
     
     
-    func adjoint() -> Matrix {
-        
-        var adjoint:[[Float64]] = []
-        
-        return Matrix(data: adjoint)
+    func cofactorMatrix() -> Matrix {
+        return calculateCofactorMatrix(data: self.data)
     }
     
     
+    private func calculateAdjoint(data: [[Float64]]) -> Matrix {
+        return calculateCofactorMatrix(data: data).transpose()
+    }
+    
+    
+    func adjoint() -> Matrix {
+        return calculateAdjoint(data: self.data)
+    }
+    
+    
+    private func calculateInverse(data: [[Float64]]) -> Matrix {
+        // This function uses the adjoint approach, which is
+        // invserse(A) = 1/det(A)*adjoint(A)
+        return calculateAdjoint(data: self.data).scalarMultiplication(scalar: 1/calculateDeterminat(data: self.data))
+    }
+       
+    
     func inverse() -> Matrix {
-        var inversedMatrix:[[Float64]] = []
-        
-        return Matrix(data: inversedMatrix)
+        return calculateInverse(data: self.data)
     }
     
     
@@ -128,7 +161,5 @@ struct Matrix {
 
 
 //let test:Matrix = Matrix(data: [[2, 4], [-1, 3]])
-//print(test.determinant())
-
-//let test2:Matrix = Matrix(data: [[2, 4, 3], [-1, 3, 2], [0, 1, 2]])
-//print(test2.determinant())
+//let test:Matrix = Matrix(data: [[2, 4, 3], [-1, 3, 2], [0, 1, 2]])
+//print(test.inverse())
