@@ -143,23 +143,43 @@ struct Matrix {
         return calculateAdjoint(data: self.data)
     }
     
+    enum MathematicalError: Error {
+        case inverseDoesNotExist
+    }
     
-    private func calculateInverse(data: [[Float64]]) -> Matrix {
+    private func calculateInverse(data: [[Float64]]) throws -> Matrix {
         // This function uses the adjoint approach, which is
         // invserse(A) = 1/det(A)*adjoint(A)
-        return calculateAdjoint(data: self.data).scalarMultiplication(scalar: 1/calculateDeterminat(data: self.data))
+        
+        let det:Float64 = calculateDeterminat(data: self.data)
+        
+        // matrices with determinant of 0 are not invertible:
+        if det == 0 {
+            throw MathematicalError.inverseDoesNotExist
+        }
+
+        return calculateAdjoint(data: self.data).scalarMultiplication(scalar: 1/det)
     }
        
     
     func inverse() -> Matrix {
-        return calculateInverse(data: self.data)
+        do {
+            return try calculateInverse(data: self.data)
+        } catch MathematicalError.inverseDoesNotExist {
+            print("This matrix has no inverse!")
+            return Matrix(data: [[]])
+        } catch {
+            print("Ooops, an unknown error occured. Enjoy debugging ;-)")
+            return Matrix(data: [[]])
+        }
+        
     }
-    
     
 }
 
 
 
 //let test:Matrix = Matrix(data: [[2, 4], [-1, 3]])
+//let test:Matrix = Matrix(data: [[2, 2], [2, 2]])
 //let test:Matrix = Matrix(data: [[2, 4, 3], [-1, 3, 2], [0, 1, 2]])
 //print(test.inverse())
