@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct Matrix {
     
     var data:[[Float64]]
@@ -30,8 +29,6 @@ struct Matrix {
     
     
     private func calculateDeterminat(data: [[Float64]]) -> Float64 {
-        
-        // To-Do: add check whether matrix is symmetric!
         
         var determinant:Float64 = 0
         if data[0].count > 1 {
@@ -65,6 +62,49 @@ struct Matrix {
     
     func determinant() -> Float64 {
         return calculateDeterminat(data: self.data)
+    }
+    
+    
+    private func subMatrix(data: [[Float64]], withoutRow: Int, withoutCol: Int) -> [[Float64]] {
+        // Helper function to get a sub matrix of a matrix, e.g. for calculating the
+        // sub determinants for a cofactor matrix.
+        var subMatrix: [[Float64]] = []
+        
+        var truncatedMatrix:[[Float64]] = data
+        truncatedMatrix.remove(at: withoutRow)
+        
+        for row in 0...(truncatedMatrix.count - 1){
+            var subRow:[Float64] = truncatedMatrix[row]
+            subRow.remove(at: withoutCol)
+            subMatrix.append(subRow)
+        }
+        
+        return subMatrix
+    }
+    
+    
+    
+    func cofactorMatrix() -> Matrix {
+        var cofactorMatrix:[[Float64]] = []
+        
+        // Loop over all coefficient, get right sign,
+        // and determinant of sub matrix.
+        
+        // Note that this function is only allowed for aquare matrices.
+        let rows:Int = self.data[0].count
+        let cols:Int = rows
+        
+        for row in 0...(rows - 1) {
+            var tempRow:[Float64] = []
+            for col in 0...(cols - 1) {
+                let det:Float64 = calculateDeterminat(data: subMatrix(data: self.data, withoutRow: row, withoutCol: col))
+                let sign:Float64 = pow((0-1), (Float64(row) + Float64(col)))
+                tempRow.append(sign*det)
+            }
+            cofactorMatrix.append(tempRow)
+        }
+        
+        return Matrix(data: cofactorMatrix)
     }
     
     
