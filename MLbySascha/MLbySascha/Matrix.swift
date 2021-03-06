@@ -9,12 +9,22 @@ import Foundation
 
 struct Matrix {
     
-    var data:[[Float64]]
+    let data:[[Float64]]
+    let rows:Int
+    let columns:Int
+    let isSymmetric:Bool
     
     init(data:[[Float64]]){
         self.data = data
+        self.rows = self.data.count
+        self.columns = self.data[0].count
+        if self.rows != self.columns {
+            self.isSymmetric = false
+        } else {
+            self.isSymmetric = true
+        }
     }
-    
+        
     
     func scalarMultiplication(scalar: Float64) -> Matrix {
         
@@ -145,6 +155,7 @@ struct Matrix {
     
     enum MathematicalError: Error {
         case inverseDoesNotExist
+        case multiplicationNotPossible(String)
     }
     
     private func calculateInverse(data: [[Float64]]) throws -> Matrix {
@@ -175,11 +186,35 @@ struct Matrix {
         
     }
     
+        
+    
+    func multiply(with: Matrix) -> Matrix {
+        
+        var newArray:[[Float64]] = []
+        if (self.rows != with.columns) && (self.columns != with.rows) {
+            print("Multiplication not possible. Ensure you multiply a n x m matrix with an m x n matrix. An empty Matrix is returned")
+        } else {
+            for i in 0...(self.data.count - 1)  {
+                var newRow:[Float64] = []
+                for k in 0...(with.data[i].count - 1){
+                    var newCoef:Float64 = 0
+                    for j in 0...(self.data[i].count - 1) {
+                        newCoef = newCoef + self.data[i][j]*with.data[j][k]
+                    }
+                    newRow.append(newCoef)
+                }
+                newArray.append(newRow)
+            }
+        }
+        return Matrix(data: newArray)
+    }
 }
-
-
 
 //let test:Matrix = Matrix(data: [[2, 4], [-1, 3]])
 //let test:Matrix = Matrix(data: [[2, 2], [2, 2]])
 //let test:Matrix = Matrix(data: [[2, 4, 3], [-1, 3, 2], [0, 1, 2]])
 //print(test.inverse())
+
+//let A:Matrix = Matrix(data: [[3, 2, 1], [1, 0, 2]])
+//let B:Matrix = Matrix(data: [[1, 2], [0, 1], [4, 0]])
+//print(A.multiply(with: B))
