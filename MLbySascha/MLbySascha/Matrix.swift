@@ -218,3 +218,8 @@ struct Matrix {
 //let A:Matrix = Matrix(data: [[3, 2, 1], [1, 0, 2]])
 //let B:Matrix = Matrix(data: [[1, 2], [0, 1], [4, 0]])
 //print(A.multiply(with: B))
+
+// Simple linear regression:
+//let X:Matrix = Matrix(data: [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8], [1, 9], [1, 10]])
+//let y:Matrix = Matrix(data: [[1.6], [2.1], [2.4], [2.9], [2.9], [3.5], [4.1], [4.7], [4.8], [5.6]])
+//print(X.transpose().multiply(with: X).inverse().multiply(with: X.transpose()).multiply(with: y))
